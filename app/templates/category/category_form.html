@@ -1,0 +1,38 @@
+{% extends "design/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block sidebar %}
+    <div class="list-group">
+		<a href="{% url 'profile' %}" class="list-group-item list-group-item-action" aria-current="true">Profile</a>
+		<a href="{% url 'design_request_list' %}" class="list-group-item list-group-item-action">All application</a>
+		<a href="{% url 'category_list' %}" class="list-group-item list-group-item-action">All category</a>
+		<a href="{% url 'category_create' %}" class="list-group-item list-group-item-action">Create category</a>
+	</div>
+{% endblock %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">
+                    {% if action == "create" %}
+                    Редактирование категории
+                    {% else %}
+                    Изменить категорию
+                    {% endif %}
+                </legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">
+                    {% if action == "create" %}
+                    Создать
+                    {% else %}
+                    Сохранить
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

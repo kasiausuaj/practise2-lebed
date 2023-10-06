@@ -1,0 +1,50 @@
+{% extends 'design/base.html' %}
+{% block content %}
+{% if design_request_count %}
+<h5>Кол-во заявок принятых в работу: {{ design_request_count }}</h5>
+<hr />
+{% endif %}
+{% if page != 'home' %}
+<div class="form-group">
+	<form method="GET">
+		<label for="exampleFormControlSelect1">По статусу:</label>
+		<div class="d-flex">
+			<select name="status" class="form-control" id="exampleFormControlSelect1">
+				<option {% if status == "new" %} selected {% endif %} name="new" value="new">Новая заявка</option>
+				<option {% if status == "in_progress" %} selected {% endif %} name="in_progress" value="in_progress">В процессе работы</option>
+				<option {% if status == "completed" %} selected {% endif %} name="completed" value="completed">Сделано</option>
+			</select>
+			<button type="submit" class="btn btn-primary ml-3">Применить</button>
+		</div>
+	</form>
+</div>
+{% endif %}
+{% if len_design_request == 0 %}
+<h2>Выполненных заявок нет</h2>
+{% endif %}
+{% for design_request in design_requests %}
+<article class="media content-section">
+	<img class="rounded-circle article-img" src="{{ design_request.user.profile.image.url }}" />
+	<div class="media-body">
+		<div class="article-metadata">
+			{% if user.is_superuser %}
+			<a class="mr-2" href="{% url 'design_request_list' %}">{{ design_request.user.username }}</a>
+			{% else %}
+			<a class="mr-2" href="{% url 'design_request_list'  %}">{{ design_request.user.username }}</a>
+			{% endif %}
+			<small class="text-muted">{{ design_request.created_at }}</small>
+			<small class="text-muted">{{ design_request.category }}</small>
+			<small class="text-muted">
+				{% if design_request.status == 'new' %} Новая заявка {% endif %}
+				{% if design_request.status == 'in_progress' %}В процессе работы {% endif %}
+				{% if design_request.status == 'completed' %} Сделано {% endif %}
+			</small>
+		</div>
+		<h2>
+			<a class="article-title" href="{% url 'design_request_detail' design_request.id %}">{{ design_request.title}}</a>
+		</h2>
+		<p class="article-content">{{ design_request.content }}</p>
+	</div>
+</article>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "design/base.html" %}
+{% block content %}
+{% for design_request in design_requests %}
+<article class="media content-section">
+	<img class="rounded-circle article-img" src="{{ design_request.author.profile.image.url }}">
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="{% url 'user_design_requests' design_request.author.username %}">{{design_request.author }}</a>
+			<small class="text-muted">{{ design_request.date_posted|date:"F d, Y" }}</small>
+		</div>
+		<h2>
+			<a class="article-title" href="{% url 'design_request_detail' design_request.id %}">{{ design_request.title}}</a>
+		</h2>
+		<p class="article-content">{{ design_request.content }}</p>
+	</div>
+</article>
+{% endfor %}
+{% endblock content %}
+

@@ -1,0 +1,44 @@
+{% extends 'design/base.html' %}
+{% block content %}
+<article class="media content-section">
+	<img class="rounded-circle article-img" src="{{ design_request.user.profile.image.url }}" />
+	<div class="media-body">
+		<div class="article-metadata">
+			<a class="mr-2" href="{% url 'design_request_list' %}">{{ design_request.user.username }}</a>
+			<small class="text-muted">{{ design_request.created_at }}</small>
+			<small class="text-muted">{{ design_request.category }}</small>
+			<small class="text-muted">
+				{% if design_request.status == 'new' %} Новый {% endif %}
+				{% if design_request.status == 'in_progress' %} В процессе работы {% endif %}
+				{% if design_request.status == 'completed' %} Сделано {% endif %}
+			</small>
+			{% if design_request.status == 'new' or user.is_superuser and design_request.status != 'completed' %}
+			<div>
+				<a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'design_request_edit' design_request.id %}">Edit</a>
+				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'design_request_delete' design_request.id %}">Delete</a>
+			</div>
+			{% endif %}
+		</div>
+		<small>Name</small>
+		<h2 class="article-title">{{ design_request.title }}</h2>
+		<hr />
+		<small class="mb-3 d-block">Photos before work</small>
+		<img class="w-100" src="{{ design_request.image.url }}" />
+		<hr />
+		{% if design_request.image_after %}
+		<small>Photos after work</small>
+		<img class="w-100" src="{{ design_request.image_after.url }}" />
+		<hr />
+		{% endif %}
+
+		<small>Content</small>
+		<p class="article-content">{{ design_request.content }}</p>
+		<hr />
+
+		{% if design_request.comment %}
+		<small>Comment</small>
+		<p class="article-content">{{ design_request.comment }}</p>
+		{% endif %}
+	</div>
+</article>
+{% endblock %}

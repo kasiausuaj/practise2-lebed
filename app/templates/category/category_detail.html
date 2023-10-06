@@ -1,0 +1,24 @@
+{% extends "design/base.html" %}
+
+{% block sidebar %}
+    <div class="list-group">
+		<a href="{% url 'profile' %}" class="list-group-item list-group-item-action" aria-current="true">Profile</a>
+		<a href="{% url 'design_request_list' %}" class="list-group-item list-group-item-action">All application</a>
+		<a href="{% url 'category_list' %}" class="list-group-item list-group-item-action">All category</a>
+		<a href="{% url 'category_create' %}" class="list-group-item list-group-item-action">Create category</a>
+	</div>
+{% endblock %}
+
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <h2>{{ category.title }}</h2>
+            <div>
+                <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'category_edit' category.id %}">Change</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'category_delete' category.id %}">Delete</a>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock content %}
